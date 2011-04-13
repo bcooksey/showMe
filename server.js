@@ -54,7 +54,8 @@ function newClient(message, client) {
 }
 
 function onAdminMessage(message, client){
-    console.log('admin ' + client.sessionId + ' gave client ' + message.client + ' command ' + message.command);
-    customers[message.client].send({command: message.command});
+    console.log('admin ' + client.sessionId + ' gave client ' + message.client + ' command ' + message.command + ' with args: ');
+    console.dir(message.args);
+    customers[message.client].send({command: message.command, args: message.args});
 }
 

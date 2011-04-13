@@ -11,8 +11,11 @@ function connectToShowMe() {
 function dispatchCommand() {
     var clientCommand = document.getElementById('command').value;
     var clientId  = document.getElementById('client').value;
-    console.log('Dispatching command "' + clientCommand + '" to client "' + clientId + '"');
-    socket.send({type: 'A', client: clientId, command: clientCommand});
+    var clientArgs = document.getElementById('args').value;
+    console.log('Dispatching command "' + clientCommand + '" to client "' + clientId + '"' + ' with args ' + clientArgs);
+    socket.send({type: 'A', client: clientId, command: clientCommand, args: clientArgs});
 }
+
+function makeClientLoadIndex() {}
 
 connectToShowMe();

@@ -5,11 +5,15 @@
     </head>
     <body>
         <h1>Admin Example</h1>
-        <div>Type a command in the boxThis should have pulled in the necessary files to communicate with the server</div>
+        <div>Fill in the boxes to issue a command to the client</div>
         Client:<input type="text" id="client"></input>
         <br />
         Command:<input type="text" id="command"></input>
         <br />
+        Args (JSON):<input type="text" id="args"></input>
+        <br />
         <input type="submit" value="Dispatch" onclick="dispatchCommand()"></input>
+        <hr />
+        <a onclick="makeClientLoadIndex()">Load index</a>
     </body>
 </html>
