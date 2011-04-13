@@ -30,8 +30,6 @@ var socket = io.listen(server);
 var customers = {};
 var admins = {};
 var adminRegExp = new RegExp('^A');
-var getClientRegExp = new RegExp('^A|\d+');
-//var commandRegExp = ;
 socket.on('connection', function(client){ 
 
     // Determine whether this is an admin or not
@@ -57,5 +55,7 @@ function newClient(message, client) {
 }
 
 function onAdminMessage(message, client){
-    console.log('received "' + message + '" from "' + client.sessionId + '"'); 
+    console.log('admin ' + client.sessionId + ' gave client ' + message.client + ' command ' + message.command);
+//    customers[0].send();
 }
+

@@ -9,10 +9,10 @@ function connectToShowMe() {
 }
 
 function dispatchCommand() {
-    var command = document.getElementById('command').value;
-    var client  = document.getElementById('client').value;
+    var userCommand = document.getElementById('command').value;
+    var userClient  = document.getElementById('client').value;
     console.log('Dispatching command "' + command + '" to client "' + client + '"');
-    socket.send('A|' + client + '|' + command);
+    socket.send({type: 'A', client: userClient, command: userCommand});
 }
 
 connectToShowMe();
