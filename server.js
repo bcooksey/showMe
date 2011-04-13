@@ -50,12 +50,11 @@ function newClient(message, client) {
     else {
         console.log('client ' + client.sessionId + ' is a customer');
         customers[client.sessionId] = client;
-        client.on('message', function(message) { onAdminMessage(message, client); });
     }  
 }
 
 function onAdminMessage(message, client){
     console.log('admin ' + client.sessionId + ' gave client ' + message.client + ' command ' + message.command);
-//    customers[0].send();
+    customers[message.client].send({command: message.command});
 }
 
