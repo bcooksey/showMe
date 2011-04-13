@@ -27,23 +27,35 @@ server.listen(8899);
 // Setup socket.io 
 var io  = require('socket.io');
 var socket = io.listen(server); 
-var customers;
-var admins;
+var customers = {};
+var admins = {};
+var adminRegExp = new RegExp('^A');
+var getClientRegExp = new RegExp('^A|\d+');
+//var commandRegExp = ;
 socket.on('connection', function(client){ 
+
     // Determine whether this is an admin or not
-//    client.once('message', function(message, client) {
-//        
+    client.once('message', function(message) { newClient(message, client); });
 
-//    });
-
-    customers[client.sessionId] = client;
-    client.on('message', function(message) {
-        client.send('Echo: ' + message); 
-    });
-  
     client.on('disconnect', function(client){  
         // Anything to do?  
       
     }); 
 }); 
 
+function newClient(message, client) {
+    if ( adminRegExp.test(message) ) {
+        console.log('client ' + client.sessionId + ' is an admin');
+        admins[client.sessionId] = client;
+        client.on('message', function(message) { onAdminMessage(message, client); });
+    }
+    else {
+        console.log('client ' + client.sessionId + ' is a customer');
+        customers[client.sessionId] = client;
+        client.on('message', function(message) { onAdminMessage(message, client); });
+    }  
+}
+
+function onAdminMessage(message, client){
+    console.log('received "' + message + '" from "' + client.sessionId + '"'); 
+}
