@@ -23,11 +23,23 @@ function makeClientLoadIndex() {}
  *     Easy to get by stepping up ancestors, appending a bit and checking for css collisons
  *   XPath - gaurenteed unique. IE in its own realm for evaluation (and position indexing!!!), but it hasn't changed.
  *     Harder to make?
+ *   Item() - Determine element's index, rooted from simple query like all tags within body or all p tags.
  */
 function getSelectedElement(e){
-    console.debug('The ' + e.target + ' was clicked');
-    var anchor = document.evaluate('//a', document, null, XPathResult.ANY_TYPE, null);
-    console.debug(anchor.iterateNext().textContent);
+    var tagName = e.target.tagName.toLowerCase();
+    console.debug('You clicked: ' + tagName);
+    var elements = document.getElementsByTagName(tagName);
+    console.log('length: ' + elements.length);
+    var index = 0;
+    while ( index < elements.length ) {
+        if ( elements.item(index) == e.target ) {
+            break;
+        }
+        else {
+            index++;
+        }
+    }
+    console.log('You clicked the element indexed at ' + index);
 }
 
 
