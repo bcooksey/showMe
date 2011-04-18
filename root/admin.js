@@ -18,4 +18,19 @@ function dispatchCommand() {
 
 function makeClientLoadIndex() {}
 
+/* Options:
+ *   CSS - Generated query supported by IE8 and others.  Have to use dojo otherwise
+ *     Easy to get by stepping up ancestors, appending a bit and checking for css collisons
+ *   XPath - gaurenteed unique. IE in its own realm for evaluation (and position indexing!!!), but it hasn't changed.
+ *     Harder to make?
+ */
+function getSelectedElement(e){
+    console.debug('The ' + e.target + ' was clicked');
+    var anchor = document.evaluate('//a', document, null, XPathResult.ANY_TYPE, null);
+    console.debug(anchor.iterateNext().textContent);
+}
+
+
 connectToShowMe();
+//TODO Make this IE compatible (attachEvent)
+document.addEventListener('click', getSelectedElement, true);
