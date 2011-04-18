@@ -29,7 +29,6 @@ var io  = require('socket.io');
 var socket = io.listen(server); 
 var customers = {};
 var admins = {};
-var adminRegExp = new RegExp('^A');
 socket.on('connection', function(client){ 
 
     // Determine whether this is an admin or not
@@ -41,6 +40,7 @@ socket.on('connection', function(client){
     }); 
 }); 
 
+var adminRegExp = new RegExp('^A');
 function newClient(message, client) {
     if ( adminRegExp.test(message) ) {
         console.log('client ' + client.sessionId + ' is an admin');
@@ -56,7 +56,8 @@ function newClient(message, client) {
 
 function onAdminMessage(message, client){
     console.log('admin ' + client.sessionId + ' gave client ' + message.client + ' command ' + message.command + ' with args: ');
-    console.dir(message.args);
-    customers[message.client].send({command: message.command, args: message.args});
+    //TODO parse message.args into a JSON array.  It's currently a string
+    console.dir(message.argString);
+    customers[message.client].send({command: message.command, args: message.argString});
 }
 

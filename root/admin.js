@@ -9,11 +9,11 @@ function connectToShowMe() {
 }
 
 function dispatchCommand() {
-    var clientCommand = document.getElementById('command').value;
+    var command = document.getElementById('command').value;
     var clientId  = document.getElementById('client').value;
-    var clientArgs = document.getElementById('args').value;
-    console.log('Dispatching command "' + clientCommand + '" to client "' + clientId + '"' + ' with args ' + clientArgs);
-    socket.send({type: 'A', client: clientId, command: clientCommand, args: clientArgs});
+    var argString = document.getElementById('args').value;
+    console.log('Dispatching command "' + command + '" to client "' + clientId + '"' + ' with args ' + argString);
+    socket.send({type: 'A', client: clientId, command: command, argString: argString});
 }
 
 function makeClientLoadIndex() {}
