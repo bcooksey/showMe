@@ -4,7 +4,7 @@ console.log('Client pulled in');
 function connectToShowMe() {
     var socket = new io.Socket( 'localhost', { port: 8899 } ); 
     socket.connect();
-    socket.on('connect', function(){ socket.send('C: Hello'); });
+    socket.on('connect', function(){ socket.send('C:' + showMeIdentifier); });
     socket.on('message', onMessage);
 //    socket.on('disconnect', function(){});
 

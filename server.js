@@ -48,8 +48,9 @@ function newClient(message, client) {
         client.on('message', function(message) { onAdminMessage(message, client); });
     }
     else {
-        console.log('client ' + client.sessionId + ' is a customer');
-        customers[client.sessionId] = client;
+        var customerId = message.substr(2);
+        console.log('client ' + client.sessionId + ' ( ' + customerId + ' ) is a customer');
+        customers[customerId] = client;
     }  
 }
 
