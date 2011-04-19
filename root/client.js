@@ -27,6 +27,7 @@ function loadURL(args) {
 function highlightElement(args) {
     console.debug('Highlighting');
     console.dir(args);
+    window.scrollTo(args.x, args.y);
 }
 
 connectToShowMe();

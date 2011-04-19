@@ -43,7 +43,7 @@ function getClickedElement(e){
             index++;
         }
     }
-    lastClicked = { tag: tagName, index: index };
+    lastClicked = { tag: tagName, index: index, x: e.clientX, y: e.clientY };
     document.getElementById('args').value = JSON.stringify(lastClicked);
     console.log('You clicked the element indexed at ' + index);
 }
