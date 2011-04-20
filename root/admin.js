@@ -2,7 +2,6 @@
 console.log('Admin pulled in');
 var SHOWME = { admin: 1 }; // Prevent the iframe from connecting as a client
 var socket;
-var lastClicked = {};
 var clientDocument = null;
 
 function connectToShowMe() {
@@ -19,7 +18,10 @@ function dispatchCommand() {
     socket.send({type: 'A', client: clientId, command: command, argString: argString});
 }
 
-function makeClientLoadIndex() {}
+function makeClientLoadIndex() {
+    document.getElementById('command').value = 'loadUrl';
+    document.getElementById('args').value = JSON.stringify( { url: '../index.html' } );
+}
 
 /* Options:
  *   CSS - Generated query supported by IE8 and others.  Have to use dojo otherwise
@@ -43,8 +45,8 @@ function getClickedElement(e){
             index++;
         }
     }
-    lastClicked = { tag: tagName, index: index, x: e.clientX, y: e.clientY };
-    document.getElementById('args').value = JSON.stringify(lastClicked);
+    SHOWME.lastClicked = { tag: tagName, index: index };
+    document.getElementById('args').value = JSON.stringify(SHOWME.lastClicked);
     console.log('You clicked the element indexed at ' + index);
 }
 

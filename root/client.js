@@ -1,6 +1,7 @@
 // showMe Client
 console.log('Client pulled in');
 
+var SHOWME = {};
 function connectToShowMe() {
     if ( typeof window.parent.SHOWME !== 'undefined' && window.parent.SHOWME.admin === 1 ) {
         return;
@@ -19,15 +20,26 @@ function onMessage(message) {
     window[message.command](args);
 }
 
-function loadURL(args) {
-    console.log('Loading url: ' + args);
-    window.location = args; 
+function loadUrl(args) {
+    console.log('Loading url: ' + args.url);
+    window.location = args.url; 
 }
 
 function highlightElement(args) {
     console.debug('Highlighting');
-    console.dir(args);
-    window.scrollTo(args.x, args.y);
+
+    // Remove highlighting from previous element
+    if ( SHOWME.lastElementHighlighted ) {
+        SHOWME.lastElementHighlighted.style.backgroundColor = ''; 
+    }
+
+    // Scroll to the chosen element
+    var element = document.getElementsByTagName(args.tag).item(args.index);
+    window.scrollTo(0, element.offsetTop);
+
+    // Highlight the element
+    element.style.backgroundColor = '#CCCC33';
+    SHOWME.lastElementHighlighted = element;
 }
 
 connectToShowMe();
