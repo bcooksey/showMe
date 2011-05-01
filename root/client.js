@@ -1,45 +1,61 @@
 // showMe Client
 console.log('Client pulled in');
 
-var SHOWME = {};
-function connectToShowMe() {
-    if ( typeof window.parent.SHOWME !== 'undefined' && window.parent.SHOWME.admin === 1 ) {
-        return;
-    }
-    var socket = new io.Socket( 'localhost', { port: 8899 } ); 
-    socket.connect();
-    socket.on('connect', function(){ socket.send('C:' + showMeIdentifier); });
-    socket.on('message', onMessage);
-//    socket.on('disconnect', function(){});
+var SHOWME = (function (){
 
-}
+    var socket = null;
+    var lastElementHighlighted = null;
+    // Socket.io works through callbacks, so we need an accessible
+    // reference to this module.
+    var that = null;
 
-function onMessage(message) {
-    console.log('Received: ' + message.command);
-    var args = JSON.parse(message.args);
-    window[message.command](args);
-}
+    return {
+        client: 1,
+        identifier: null,
 
-function loadUrl(args) {
-    console.log('Loading url: ' + args.url);
-    window.location = args.url; 
-}
+        init: function() {
+            that = this;
+            this.connectToShowMe();
+        },
 
-function highlightElement(args) {
-    console.debug('Highlighting');
+        connectToShowMe: function() {
+            if ( typeof window.parent.SHOWME !== 'undefined' && window.parent.SHOWME.admin === 1 ) {
+                return;
+            }
+            socket = new io.Socket( 'localhost', { port: 8899 } ); 
+            socket.connect();
+            socket.on('connect', function(){ socket.send('C:' + that.identifier); });
+            socket.on('message', that.onMessage);
+            //    socket.on('disconnect', function(){});
+        },
 
-    // Remove highlighting from previous element
-    if ( SHOWME.lastElementHighlighted ) {
-        SHOWME.lastElementHighlighted.style.backgroundColor = ''; 
-    }
+        onMessage: function(message) {
+            console.log('Received: ' + message.command);
+            var args = JSON.parse(message.args);
+            that[message.command](args);
+        },
 
-    // Scroll to the chosen element
-    var element = document.getElementsByTagName(args.tag).item(args.index);
-    window.scrollTo(0, element.offsetTop);
+        loadUrl: function(args) {
+            console.log('Loading url: ' + args.url);
+            window.location = args.url; 
+        },
 
-    // Highlight the element
-    element.style.backgroundColor = '#CCCC33';
-    SHOWME.lastElementHighlighted = element;
-}
+        highlightElement: function(args) {
+            console.debug('Highlighting');
 
-connectToShowMe();
+            // Remove highlighting from previous element
+            if ( lastElementHighlighted ) {
+                lastElementHighlighted.style.backgroundColor = ''; 
+            }
+
+            // Scroll to the chosen element
+            var element = document.getElementsByTagName(args.tag).item(args.index);
+            window.scrollTo(0, element.offsetTop);
+
+            // Highlight the element
+            element.style.backgroundColor = '#CCCC33';
+            lastElementHighlighted = element;
+        }
+    };
+})();
+
