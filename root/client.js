@@ -7,14 +7,11 @@ var SHOWME = (function (){
     var lastElementHighlighted = null;
     // Socket.io works through callbacks, so we need an accessible
     // reference to this module.
-    var that = null;
-
-    return {
+    var that = {
         client: 1,
         identifier: null,
 
         init: function() {
-            that = this;
             this.connectToShowMe();
         },
 
@@ -57,5 +54,6 @@ var SHOWME = (function (){
             lastElementHighlighted = element;
         }
     };
+    return that;
 })();
 
