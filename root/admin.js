@@ -74,6 +74,7 @@ var SHOWME = (function() {
             that.lastClicked = { tag: tagName, index: index };
             document.getElementById('args').value = JSON.stringify(that.lastClicked);
             console.log('You clicked the element indexed at ' + index);
+            document.getElementById('command').value = 'highlightElement';
         },
 
         loadCustomerUrl: function() {
