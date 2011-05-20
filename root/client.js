@@ -1,5 +1,5 @@
-// showMe Client
-console.log('Client pulled in');
+// showMe Customer
+console.log('Customer pulled in');
 
 var SHOWME = (function (){
 
@@ -8,7 +8,7 @@ var SHOWME = (function (){
     // Socket.io works through callbacks, so we need an accessible
     // reference to this module.
     var that = {
-        client: 1,
+        customer: 1,
         identifier: null,
 
         init: function() {

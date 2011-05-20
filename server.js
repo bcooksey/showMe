@@ -55,13 +55,13 @@ function newClient(message, client) {
 
 // Main listener for data sent from admins
 function onAdminMessage(message, client){
-    // If no clientId is given, then the response is meant to be returned to the
-    // admin who sent the command.
-    if ( isEmpty(message.clientId) ) {
+    // If no customerId is given, then the response is meant to be returned to
+    // the admin who sent the command.
+    if ( isEmpty(message.customerId) ) {
         respondToAdmin(message, client);
     }
     else {
-        sendCommandToClient(message, client);
+        sendCommandToCustomer(message, client);
     }
 }
 
@@ -72,29 +72,29 @@ function respondToAdmin(message, client) {
 
     // TODO: call methods dynamically
     var response;
-    if ( message.command === 'getClientUrl' ) {
-        response = getClientUrl(args);
+    if ( message.command === 'getCustomerUrl' ) {
+        response = getCustomerUrl(args);
     }
     admins[client.sessionId].send( JSON.stringify(response) );
 }
 
-function sendCommandToClient(message, client) {
-    console.log('admin ' + client.sessionId + ' gave client ' + message.clientId + ' command ' + message.command + ' with args: ');
+function sendCommandToCustomer(message, client) {
+    console.log('admin ' + client.sessionId + ' gave customer ' + message.customerId + ' command ' + message.command + ' with args: ');
     //TODO parse message.args into a JSON array.  It's currently a string
     console.dir(message.argString);
-    customers[message.clientId].client.send({command: message.command, args: message.argString});
+    customers[message.customerId].client.send({command: message.command, args: message.argString});
 }
 
 /********** END Setup socket.io **********/
 
 /********** Commands for Admins ***********/
 
-function getClientUrl(args) {
-    if ( isEmpty(customers[args.clientId]) ) {
-        return { error: 'No client defined with id ' + args.clientId };
+function getCustomerUrl(args) {
+    if ( isEmpty(customers[args.customerId]) ) {
+        return { error: 'No customer defined with id ' + args.customerId };
     }
     else {
-        return { url: customers[args.clientId].url };
+        return { url: customers[args.customerId].url };
     }
 }
 

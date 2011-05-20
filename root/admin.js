@@ -3,7 +3,7 @@ console.log('Admin pulled in');
 
 var SHOWME = (function() { 
     var socket;
-    var clientDocument = null;
+    var customerDocument = null;
 
     var that = { 
         admin: 1,
@@ -22,10 +22,13 @@ var SHOWME = (function() {
 
         dispatchCommand: function() {
             var command = document.getElementById('command').value;
-            var clientId = document.getElementById('clientId').value;
+            var customerId = document.getElementById('customerId').value;
             var argString = document.getElementById('args').value;
-            console.log('Dispatching command "' + command + '" to client "' + clientId + '"' + ' with args ' + argString);
-            socket.send({type: 'A', clientId: clientId, command: command, argString: argString});
+            console.log(
+                'Dispatching command "' + command + '" to customer "'
+                + customerId + '"' + ' with args ' + argString
+            );
+            socket.send({type: 'A', customerId: customerId, command: command, argString: argString});
         },
 
         isEmpty: function(value) {
@@ -37,7 +40,7 @@ var SHOWME = (function() {
             };
         },
 
-        makeClientLoadIndex: function() {
+        makeCustomerLoadIndex: function() {
             document.getElementById('command').value = 'loadUrl';
             document.getElementById('args').value = JSON.stringify( { url: '../index.html' } );
         },
@@ -51,13 +54,13 @@ var SHOWME = (function() {
          *     Dynamically created markup changes indexing
          */
         getClickedElement: function(e){
-            if ( that.isEmpty(document.getElementById('clientPage').src) ) {
+            if ( that.isEmpty(document.getElementById('customerPage').src) ) {
                 console.info('empty src');
                 return;
             }
             var tagName = e.target.tagName.toLowerCase();
             console.debug('You clicked: ' + tagName);
-            var elements = clientDocument.getElementsByTagName(tagName);
+            var elements = customerDocument.getElementsByTagName(tagName);
             console.log('length: ' + elements.length);
             var index = 0;
             while ( index < elements.length ) {
@@ -73,10 +76,10 @@ var SHOWME = (function() {
             console.log('You clicked the element indexed at ' + index);
         },
 
-        loadClientUrl: function() {
-            var clientId = document.getElementById('clientId').value;
-            if ( that.isEmpty(clientId) ) {
-                console.warn('No client');
+        loadCustomerUrl: function() {
+            var customerId = document.getElementById('customerId').value;
+            if ( that.isEmpty(customerId) ) {
+                console.warn('No customer id specified');
                 return;
             } 
 
@@ -88,17 +91,17 @@ var SHOWME = (function() {
                 }
                 else {
                     //TODO Make this IE compatible (attachEvent)
-                    var clientPage = document.getElementById('clientPage');
-                    clientPage.src = response.url; 
-                    clientPage.onload = function() {
-                        clientDocument = clientPage.contentDocument;
-                        clientDocument.addEventListener('click', that.getClickedElement, true);
+                    var customerPage = document.getElementById('customerPage');
+                    customerPage.src = response.url; 
+                    customerPage.onload = function() {
+                        customerDocument = customerPage.contentDocument;
+                        customerDocument.addEventListener('click', that.getClickedElement, true);
                     };
                 }
             });
 
-            var args = JSON.stringify({ clientId: clientId });
-            socket.send({ args: args, command: 'getClientUrl'}); 
+            var args = JSON.stringify({ customerId: customerId });
+            socket.send({ args: args, command: 'getCustomerUrl'}); 
         }
     };
 
