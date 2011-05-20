@@ -40,9 +40,9 @@ var SHOWME = (function() {
             };
         },
 
-        makeCustomerLoadIndex: function() {
+        makeCustomerLoadCorrectPage: function() {
             document.getElementById('command').value = 'loadUrl';
-            document.getElementById('args').value = JSON.stringify( { url: '../index.html' } );
+            document.getElementById('args').value = JSON.stringify( { url: './customer.html' } );
         },
 
         /* Options:
