@@ -20,16 +20,22 @@ var SHOWME = (function() {
         connectToShowMe: function() {
             socket = new io.Socket( 'localhost', { port: 8899 } ); 
             socket.connect();
-            socket.on('connect', function(){ socket.send('A: Hello'); });
+            var message = JSON.stringify({ role: 'A' });
+            socket.on('connect', function(){ socket.send(message); });
         },
 
         dispatchCommand: function() {
-            var command = document.getElementById('command').value;
-            var clientId  = document.getElementById('client').value;
-            var argString = document.getElementById('args').value;
+            var command = this.getCommand();
+            var clientId  = this.getClientId();
+            var argString = this.getArgs();
             console.log('Dispatching command "' + command + '" to client "' + clientId + '"' + ' with args ' + argString);
             socket.send({type: 'A', client: clientId, command: command, argString: argString});
         },
+
+        // Simple getter methods
+        getCommand: function() { return document.getElementById('command').value; },
+        getClientId: function() { return document.getElementById('client').value; },
+        getArgs: function() { return document.getElementById('args').value; },
 
         makeClientLoadIndex: function() {
             document.getElementById('command').value = 'loadUrl';

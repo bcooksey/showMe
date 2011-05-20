@@ -40,17 +40,16 @@ socket.on('connection', function(client){
     }); 
 }); 
 
-var adminRegExp = new RegExp('^A');
 function newClient(message, client) {
-    if ( adminRegExp.test(message) ) {
+    var clientInfo = JSON.parse(message);
+    if ( clientInfo.role === 'A' ) {
         console.log('client ' + client.sessionId + ' is an admin');
         admins[client.sessionId] = client;
         client.on('message', function(message) { onAdminMessage(message, client); });
     }
     else {
-        var customerId = message.substr(2);
-        console.log('client ' + client.sessionId + ' ( ' + customerId + ' ) is a customer');
-        customers[customerId] = client;
+        console.log('client ' + client.sessionId + ' ( ' + clientInfo.id + ' ) is a customer');
+        customers[clientInfo.id] = { client: client, url: clientInfo.url };
     }  
 }
 

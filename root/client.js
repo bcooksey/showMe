@@ -21,7 +21,12 @@ var SHOWME = (function (){
             }
             socket = new io.Socket( 'localhost', { port: 8899 } ); 
             socket.connect();
-            socket.on('connect', function(){ socket.send('C:' + that.identifier); });
+            var clientInfo = JSON.stringify({ 
+                role: 'C',
+                id: that.identifier,
+                url: window.location
+            });
+            socket.on('connect', function(){ socket.send(clientInfo) });
             socket.on('message', that.onMessage);
             //    socket.on('disconnect', function(){});
         },
