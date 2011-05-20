@@ -21,9 +21,9 @@ var SHOWME = (function() {
         },
 
         dispatchCommand: function() {
-            var command = document.getElementById('command');
-            var clientId = document.getElementById('clientId');
-            var argString = document.getElementById('args');
+            var command = document.getElementById('command').value;
+            var clientId = document.getElementById('clientId').value;
+            var argString = document.getElementById('args').value;
             console.log('Dispatching command "' + command + '" to client "' + clientId + '"' + ' with args ' + argString);
             socket.send({type: 'A', clientId: clientId, command: command, argString: argString});
         },
@@ -51,7 +51,7 @@ var SHOWME = (function() {
          *     Dynamically created markup changes indexing
          */
         getClickedElement: function(e){
-            if ( that.isEmpty(document.getElementById('clientPage')) ) {
+            if ( that.isEmpty(document.getElementById('clientPage').src) ) {
                 console.info('empty src');
                 return;
             }
@@ -74,7 +74,7 @@ var SHOWME = (function() {
         },
 
         loadClientUrl: function() {
-            var clientId = document.getElementById('clientId');
+            var clientId = document.getElementById('clientId').value;
             if ( that.isEmpty(clientId) ) {
                 console.warn('No client');
                 return;
