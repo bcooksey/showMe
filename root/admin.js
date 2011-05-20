@@ -16,8 +16,7 @@ var SHOWME = (function() {
         connectToShowMe: function() {
             socket = new io.Socket( 'localhost', { port: 8899 } ); 
             socket.connect();
-            var message = JSON.stringify({ role: 'A' });
-            socket.on('connect', function(){ socket.send(message); });
+            socket.on('connect', function(){ socket.send({ role: 'A'}); });
         },
 
         dispatchCommand: function() {
