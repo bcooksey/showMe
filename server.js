@@ -24,7 +24,7 @@ var server = http.createServer(function(req, res){
 });
 server.listen(8899);
 
-// Setup socket.io 
+/********** Setup socket.io **********/
 var io  = require('socket.io');
 var socket = io.listen(server); 
 var customers = {};
@@ -53,10 +53,62 @@ function newClient(message, client) {
     }  
 }
 
+// Main listener for data sent from admins
 function onAdminMessage(message, client){
+    // If no client is given, then the response is meant to be returned to the
+    // admin who sent the command.
+    if ( isEmpty(message.client) ) {
+        respondToAdmin(message, client);
+    }
+    else {
+        sendCommandToClient(message, client);
+    }
+}
+
+function respondToAdmin(message, client) {
+    console.log('admin ' + client.sessionId + ' requested ' + message.command + ' with args: ');
+    console.dir(message.args);
+    var args = JSON.parse(message.args);
+
+    // TODO: call methods dynamically
+    var response;
+    if ( message.command === 'getClientUrl' ) {
+        response = getClientUrl(args);
+    }
+    admins[client.sessionId].send( JSON.stringify(response) );
+}
+
+function sendCommandToClient(message, client) {
     console.log('admin ' + client.sessionId + ' gave client ' + message.client + ' command ' + message.command + ' with args: ');
     //TODO parse message.args into a JSON array.  It's currently a string
     console.dir(message.argString);
-    customers[message.client].send({command: message.command, args: message.argString});
+    customers[message.client].client.send({command: message.command, args: message.argString});
 }
 
+/********** END Setup socket.io **********/
+
+/********** Commands for Admins ***********/
+
+function getClientUrl(args) {
+    if ( isEmpty(customers[args.client]) ) {
+        return { error: 'No client defined with id ' + args.client };
+    }
+    else {
+        return { url: customers[args.client].url };
+    }
+}
+
+/********** END Commands for Admins **********/
+
+/********** Helper Methods **********/
+
+function isEmpty(value){
+    if ( typeof value === "undefined" || value === null || value == '' ) {
+        return 1;
+    }
+    else {
+        return 0 
+    };
+}
+
+/********** END Helper Methods **********/

@@ -24,7 +24,7 @@ var SHOWME = (function (){
             var clientInfo = JSON.stringify({ 
                 role: 'C',
                 id: that.identifier,
-                url: window.location
+                url: window.location.href
             });
             socket.on('connect', function(){ socket.send(clientInfo) });
             socket.on('message', that.onMessage);

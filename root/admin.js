@@ -5,13 +5,12 @@ var SHOWME = (function() {
     var socket;
     var clientDocument = null;
 
-    return { 
+    var that = { 
         admin: 1,
         lastClicked: null,
 
         init: function() {
             this.connectToShowMe();
-            var that = this;
             //TODO Make this IE compatible (attachEvent)
             clientDocument = document.getElementById('clientPage').contentDocument;
             clientDocument.addEventListener('click', that.getClickedElement, true);
@@ -26,16 +25,25 @@ var SHOWME = (function() {
 
         dispatchCommand: function() {
             var command = this.getCommand();
-            var clientId  = this.getClientId();
+            var client  = this.getClient();
             var argString = this.getArgs();
-            console.log('Dispatching command "' + command + '" to client "' + clientId + '"' + ' with args ' + argString);
-            socket.send({type: 'A', client: clientId, command: command, argString: argString});
+            console.log('Dispatching command "' + command + '" to client "' + client + '"' + ' with args ' + argString);
+            socket.send({type: 'A', client: client, command: command, argString: argString});
         },
 
         // Simple getter methods
         getCommand: function() { return document.getElementById('command').value; },
-        getClientId: function() { return document.getElementById('client').value; },
+        getClient: function() { return document.getElementById('client').value; },
         getArgs: function() { return document.getElementById('args').value; },
+
+        isEmpty: function(value) {
+            if ( typeof value === "undefined" || value === null || value == '' ) {
+                return 1;
+            }
+            else {
+                return 0 
+            };
+        },
 
         makeClientLoadIndex: function() {
             document.getElementById('command').value = 'loadUrl';
@@ -67,7 +75,31 @@ var SHOWME = (function() {
             this.lastClicked = { tag: tagName, index: index };
             document.getElementById('args').value = JSON.stringify(this.lastClicked);
             console.log('You clicked the element indexed at ' + index);
+        },
+
+        loadClientUrl: function() {
+            var client = this.getClient();
+            if ( that.isEmpty(client) ) {
+                console.warn('No client');
+                return;
+            } 
+
+            // Setup listener first so we don't have a race condition
+            socket.once('message', function(rawResponse) {
+                var response = JSON.parse(rawResponse); 
+                if ( !that.isEmpty(response.error) ) {
+                    console.error( response.error );
+                }
+                else {
+                   document.getElementById('clientPage').src = response.url; 
+                }
+            });
+
+            var args = JSON.stringify({ client: client });
+            socket.send({ args: args, command: 'getClientUrl'}); 
         }
     };
+
+    return that;
 })();
 
