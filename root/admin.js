@@ -20,18 +20,12 @@ var SHOWME = (function() {
         },
 
         dispatchCommand: function() {
-            var command = that.getCommand();
-            var clientId  = that.getClientId();
-            var argString = that.getArgs();
+            var command = document.getElementById('command');
+            var clientId = document.getElementById('clientId');
+            var argString = document.getElementById('args');
             console.log('Dispatching command "' + command + '" to client "' + clientId + '"' + ' with args ' + argString);
             socket.send({type: 'A', clientId: clientId, command: command, argString: argString});
         },
-
-        // Simple getter methods
-        getCommand: function() { return document.getElementById('command').value; },
-        getClientId: function() { return document.getElementById('clientId').value; },
-        getArgs: function() { return document.getElementById('args').value; },
-        getClientPage: function() { return document.getElementById('clientPage'); },
 
         isEmpty: function(value) {
             if ( typeof value === "undefined" || value === null || value == '' ) {
@@ -79,7 +73,7 @@ var SHOWME = (function() {
         },
 
         loadClientUrl: function() {
-            var clientId = that.getClientId();
+            var clientId = document.getElementById('clientId');
             if ( that.isEmpty(clientId) ) {
                 console.warn('No client');
                 return;
