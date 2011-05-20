@@ -55,9 +55,9 @@ function newClient(message, client) {
 
 // Main listener for data sent from admins
 function onAdminMessage(message, client){
-    // If no client is given, then the response is meant to be returned to the
+    // If no clientId is given, then the response is meant to be returned to the
     // admin who sent the command.
-    if ( isEmpty(message.client) ) {
+    if ( isEmpty(message.clientId) ) {
         respondToAdmin(message, client);
     }
     else {
@@ -79,10 +79,10 @@ function respondToAdmin(message, client) {
 }
 
 function sendCommandToClient(message, client) {
-    console.log('admin ' + client.sessionId + ' gave client ' + message.client + ' command ' + message.command + ' with args: ');
+    console.log('admin ' + client.sessionId + ' gave client ' + message.clientId + ' command ' + message.command + ' with args: ');
     //TODO parse message.args into a JSON array.  It's currently a string
     console.dir(message.argString);
-    customers[message.client].client.send({command: message.command, args: message.argString});
+    customers[message.clientId].client.send({command: message.command, args: message.argString});
 }
 
 /********** END Setup socket.io **********/
@@ -90,11 +90,11 @@ function sendCommandToClient(message, client) {
 /********** Commands for Admins ***********/
 
 function getClientUrl(args) {
-    if ( isEmpty(customers[args.client]) ) {
-        return { error: 'No client defined with id ' + args.client };
+    if ( isEmpty(customers[args.clientId]) ) {
+        return { error: 'No client defined with id ' + args.clientId };
     }
     else {
-        return { url: customers[args.client].url };
+        return { url: customers[args.clientId].url };
     }
 }
 

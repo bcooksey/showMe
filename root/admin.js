@@ -10,10 +10,7 @@ var SHOWME = (function() {
         lastClicked: null,
 
         init: function() {
-            this.connectToShowMe();
-            //TODO Make this IE compatible (attachEvent)
-            clientDocument = document.getElementById('clientPage').contentDocument;
-            clientDocument.addEventListener('click', that.getClickedElement, true);
+            that.connectToShowMe();
         },
 
         connectToShowMe: function() {
@@ -24,17 +21,18 @@ var SHOWME = (function() {
         },
 
         dispatchCommand: function() {
-            var command = this.getCommand();
-            var client  = this.getClient();
-            var argString = this.getArgs();
-            console.log('Dispatching command "' + command + '" to client "' + client + '"' + ' with args ' + argString);
-            socket.send({type: 'A', client: client, command: command, argString: argString});
+            var command = that.getCommand();
+            var clientId  = that.getClientId();
+            var argString = that.getArgs();
+            console.log('Dispatching command "' + command + '" to client "' + clientId + '"' + ' with args ' + argString);
+            socket.send({type: 'A', clientId: clientId, command: command, argString: argString});
         },
 
         // Simple getter methods
         getCommand: function() { return document.getElementById('command').value; },
-        getClient: function() { return document.getElementById('client').value; },
+        getClientId: function() { return document.getElementById('clientId').value; },
         getArgs: function() { return document.getElementById('args').value; },
+        getClientPage: function() { return document.getElementById('clientPage'); },
 
         isEmpty: function(value) {
             if ( typeof value === "undefined" || value === null || value == '' ) {
@@ -59,6 +57,10 @@ var SHOWME = (function() {
          *     Dynamically created markup changes indexing
          */
         getClickedElement: function(e){
+            if ( that.isEmpty(document.getElementById('clientPage')) ) {
+                console.info('empty src');
+                return;
+            }
             var tagName = e.target.tagName.toLowerCase();
             console.debug('You clicked: ' + tagName);
             var elements = clientDocument.getElementsByTagName(tagName);
@@ -72,14 +74,14 @@ var SHOWME = (function() {
                     index++;
                 }
             }
-            this.lastClicked = { tag: tagName, index: index };
-            document.getElementById('args').value = JSON.stringify(this.lastClicked);
+            that.lastClicked = { tag: tagName, index: index };
+            document.getElementById('args').value = JSON.stringify(that.lastClicked);
             console.log('You clicked the element indexed at ' + index);
         },
 
         loadClientUrl: function() {
-            var client = this.getClient();
-            if ( that.isEmpty(client) ) {
+            var clientId = that.getClientId();
+            if ( that.isEmpty(clientId) ) {
                 console.warn('No client');
                 return;
             } 
@@ -91,11 +93,17 @@ var SHOWME = (function() {
                     console.error( response.error );
                 }
                 else {
-                   document.getElementById('clientPage').src = response.url; 
+                    //TODO Make this IE compatible (attachEvent)
+                    var clientPage = document.getElementById('clientPage');
+                    clientPage.src = response.url; 
+                    clientPage.onload = function() {
+                        clientDocument = clientPage.contentDocument;
+                        clientDocument.addEventListener('click', that.getClickedElement, true);
+                    };
                 }
             });
 
-            var args = JSON.stringify({ client: client });
+            var args = JSON.stringify({ clientId: clientId });
             socket.send({ args: args, command: 'getClientUrl'}); 
         }
     };
