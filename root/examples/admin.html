@@ -1,5 +1,6 @@
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="/examples/admin.css" />
         <script type="text/javascript" src="http://localhost:8899/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="http://localhost:8899/admin.js"></script>
         <script type="text/javascript">
@@ -7,19 +8,36 @@
         </script>
     </head>
     <body>
-        <h1>Admin Example</h1>
-        <div>Fill in the boxes to issue a command to the customer</div>
-        Customer ID:<input type="text" id="customerId"></input>
-        <br />
-        Command:<input type="text" id="command"></input>
-        <br />
-        Args (JSON):<input type="text" id="args"></input>
-        <br />
-        <input type="submit" value="Dispatch" onclick="SHOWME.dispatchCommand()"></input>
-        <a onclick="SHOWME.makeCustomerLoadCorrectPage()" style="float: right;">Put customer at correct page</a>
-        <hr />
-        <h3>Customer is viewing:</h3>
-        <button type="button" onclick="SHOWME.loadCustomerUrl()">Load Customer's Page</button>
-        <iframe id="customerPage" src="" style="width: 100%; height: 300px"></iframe>
+        <h1>Admin Control Panel</h1>
+        <div>Fill in the boxes to issue a command to the customer or choose a preset command from the "Quick Commands" list</div>
+        <div class="command">
+            <table>
+                <tr>
+                    <td>Customer ID:</td>
+                    <td><input type="text" id="customerId"></input></td>
+                </tr>
+                <tr>
+                    <td>Command:</td>
+                    <td><input type="text" id="command"></input></td>
+                </tr>
+                <tr>
+                    <td>Args (JSON):</td>
+                    <td><input type="text" id="args"></input></td>
+                </tr>
+            </table>
+            <input type="submit" value="Dispatch Command" onclick="SHOWME.dispatchCommand()"></input>
+        </div>
+        <div class="quickCommands">
+            <h3>Quick Commands</h3>
+            <ul>
+                <li><a onclick="SHOWME.makeCustomerLoadCorrectPage()">Put customer at correct page</a></li>
+            </ul>
+        </div>
+        <div class="customerView">
+            <h3>Customer's View 
+                (<a onclick="SHOWME.loadCustomerUrl()">Refresh</a>)
+            </h3>
+            <iframe id="customerPage" src="" style="width: 100%; height: 300px"></iframe>
+        </div>
     </body>
 </html>

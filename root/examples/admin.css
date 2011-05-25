@@ -1,0 +1,45 @@
+body {
+    background-color: #B00A0A;
+    width: 960px;
+}
+
+div.command {
+   float: left; 
+   width: 470px;
+   padding-top: 20px;
+   padding-right: 10px;
+}
+
+/* Command Table */
+
+div.command table {
+    padding-bottom: 10px;
+}
+
+div.command td {
+    padding-bottom: 3px;
+    padding-right: 10px;
+}
+
+div.command td input {
+    width: 320px;
+}
+
+/* Quick Commands */
+
+div.quickCommands {
+    float: right;
+    width: 480px;
+}
+
+/* Customer View */
+
+div.customerView {
+   padding-top: 20px;
+   width: 100%;
+   float: left;
+}
+
+div.customerView a {
+    color: #A69696;
+}
