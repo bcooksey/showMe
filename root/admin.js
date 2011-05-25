@@ -58,6 +58,15 @@ var SHOWME = (function() {
                 console.info('empty src');
                 return;
             }
+
+            // Allow admins to prevent links from being followed and onclick
+            // events from firing. Can't default to preventing actions because
+            // many browsers do special things when control keys are pressed
+            // (example: ctrl + click opens a link in a new tab in FF )  
+            if ( e.ctrlKey ) {
+                e.preventDefault();
+            }
+
             var tagName = e.target.tagName.toLowerCase();
             console.debug('You clicked: ' + tagName);
             var elements = customerDocument.getElementsByTagName(tagName);

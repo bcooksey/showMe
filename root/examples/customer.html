@@ -4,6 +4,9 @@
         <script type="text/javascript" src="http://localhost:8899/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="http://localhost:8899/customer.js"></script>
         <script type="text/javascript">
+            function showPopUp() { alert('Dynamic content example'); }
+        </script>
+        <script type="text/javascript">
             SHOWME.identifier = 'a@a.com';
             SHOWME.init();
         </script>
@@ -35,8 +38,8 @@ Nikola Milev was considered among the potential foreign ministers of the new gov
 In 1925 Milev was selected as the representative of Bulgaria in the United States, but was killed days before his departure. The decision to kill Milev was taken by a group of Macedonian figures around Dimitar Vlahov. It is believed that Milev was one of the main ideological opponents to the Comintern and its supporters in the Macedonian movement. The decision to murder Milev was approved by Stanke Dimitrov and the Central Committee of the Bulgarian Communist Party.[1]
 Milev's funeral on 15 February 1925 was one of the most crowded in Sofia in those years. His murder increased tension in the Bulgarian society in this period. The actual killer was captured by Macedonian workers, and after his confession was killed by the Internal Macedonian Revolutionary Organization (IMRO), but instead of the actual instigators, their supporters deputies Todor Strashimirov and Haralampi Stoyanov were killed.[2]
         </p>
-        <div>
-            That is a lot of content...
+        <div onclick="showPopUp()">
+            Clicking here will popup a box.
         </div>
         <a href="http://localhost:8899/index.html">Back to main page</a>
     </body>
