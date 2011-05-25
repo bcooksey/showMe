@@ -65,6 +65,7 @@ var SHOWME = (function() {
             // (example: ctrl + click opens a link in a new tab in FF )  
             if ( e.ctrlKey ) {
                 e.preventDefault();
+                e.stopPropagation(); //FIXME: BROKEN FOR IE
             }
 
             var tagName = e.target.tagName.toLowerCase();
