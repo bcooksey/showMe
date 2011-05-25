@@ -40,6 +40,12 @@ div.customerView {
    float: left;
 }
 
+iframe#customerPage {
+    height: 500px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 div.customerView a {
     color: #A69696;
 }
