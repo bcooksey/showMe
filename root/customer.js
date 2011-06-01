@@ -28,10 +28,15 @@ var SHOWME = (function (){
             });
             socket.on('connect', function(){ socket.send(clientInfo) });
             socket.on('message', that.onMessage);
-            //    socket.on('disconnect', function(){});
         },
 
         onMessage: function(message) {
+            if ( message.error ) {
+                console.error(message.error);
+                socket.disconnect();
+                return;
+            }
+
             console.log('Received: ' + message.command);
             var args = JSON.parse(message.args);
             that[message.command](args);

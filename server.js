@@ -29,14 +29,20 @@ var io  = require('socket.io');
 var socket = io.listen(server); 
 var customers = {};
 var admins = {};
+var clientsToCustomers = {};
 socket.on('connection', function(client){ 
 
     // Determine whether this is an admin or not
     client.once('message', function(message) { newClient(message, client); });
 
-    client.on('disconnect', function(client){  
-        // Anything to do?  
-      
+    client.on('disconnect', function(){  
+        if ( clientsToCustomers[client.sessionId] ) {
+            delete customers[ clientsToCustomers[client.sessionId] ];
+            delete clientsToCustomers[client.sessionId];
+        }
+        else {
+            delete admins[client.sessionId];
+        }
     }); 
 }); 
 
@@ -48,8 +54,15 @@ function newClient(message, client) {
         client.on('message', function(message) { onAdminMessage(message, client); });
     }
     else {
+        if ( customers[clientInfo.id] ) {
+            console.log('client ' + client.sessionId + ' claims to be customer ' + clientInfo.id + ', but a client already has that id');
+            client.send({ error: 'Sorry, there is already a customer with that id' });
+            return;
+        }
+
         console.log('client ' + client.sessionId + ' ( ' + clientInfo.id + ' ) is a customer');
         customers[clientInfo.id] = { client: client, url: clientInfo.url };
+        clientsToCustomers[client.sessionId] = clientInfo.id;
     }  
 }
 
