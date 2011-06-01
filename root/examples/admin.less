@@ -1,0 +1,92 @@
+/* Palette color codes
+ * Taken from http://colorschemedesigner.com/#3r41T..qaw0w0
+ * Other possibilities:
+ *   http://colorschemedesigner.com/#3r61T..qaw0w0
+ *   http://colorschemedesigner.com/#0e61T..qaw0w0
+*/
+@primary1: #055D83;
+@primary2: #1C4D63;
+@primary3: #023C55;
+@primary4: #3697C1;
+@primary5: #5BA2C1;
+
+@secondaryA1: #10218F;
+@secondaryA2: #242E6B;
+@secondaryA3: #05115D;
+@secondaryA4: #4255C7;
+@secondaryA5: #6673C7;
+
+@secondaryB1: #D09600;
+@secondaryB2: #9C7B27;
+@secondaryB3: #876100;
+@secondaryB4: #E8B73A;
+@secondaryB5: #E8C468;
+
+@complement1: #D06E00;
+@complement2: #9C6527;
+@complement3: #874800;
+@complement4: #E8963A;
+@complement5: #E8AC68;
+
+/* Main Elements */
+
+body {
+    background-color: @secondaryB5;
+    color: black;
+    width: 960px;
+}
+
+div.command {
+    float: left; 
+    width: 470px;
+    padding-top: 20px;
+    padding-right: 10px;
+}
+
+h1,h3 {
+    color: @primary1;
+}
+
+/* Command Table */
+
+div.command table {
+    padding-bottom: 10px;
+}
+
+div.command td {
+    padding-bottom: 3px;
+    padding-right: 10px;
+}
+
+div.command td input {
+    width: 320px;
+}
+
+/* Quick Commands */
+
+div.quickCommands {
+    float: right;
+    width: 480px;
+}
+
+div.quickCommands ul {
+    color: @secondaryB3;
+}
+
+/* Customer View */
+
+div.customerView {
+   padding-top: 20px;
+   width: 100%;
+   float: left;
+}
+
+iframe#customerPage {
+    height: 500px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+div.customerView a {
+    color: @secondaryB2;
+}
