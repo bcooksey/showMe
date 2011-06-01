@@ -101,7 +101,7 @@ var SHOWME = (function() {
                     console.error( response.error );
                 }
                 else {
-                    //TODO Make this IE compatible (attachEvent)
+                    //FIXME Make this IE compatible (attachEvent)
                     var customerPage = document.getElementById('customerPage');
                     customerPage.src = response.url; 
                     customerPage.onload = function() {
