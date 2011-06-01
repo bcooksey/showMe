@@ -42,7 +42,7 @@ var SHOWME = (function() {
 
         makeCustomerLoadCorrectPage: function() {
             document.getElementById('command').value = 'loadUrl';
-            document.getElementById('args').value = JSON.stringify( { url: './customer.html' } );
+            document.getElementById('args').value = JSON.stringify( { url: './customer.html?identifier=' } );
         },
 
         /* Options:
