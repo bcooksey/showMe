@@ -1,6 +1,4 @@
 // showMe Customer
-console.log('Customer pulled in');
-
 var SHOWME = (function (){
 
     // Private stuff
@@ -12,6 +10,7 @@ var SHOWME = (function (){
     var that = {
         customer: 1,
         identifier: null,
+        debug: 0,
 
         init: function() {
             this.connectToShowMe();
@@ -32,6 +31,14 @@ var SHOWME = (function (){
             socket.on('message', that.onMessage);
         },
 
+        /* log - function to log messages to the console IF debug mode is on
+         */
+        log: function(message) {
+            if (that.debug === 1) {
+                console.log(message);
+            }
+        },
+
         onMessage: function(message) {
             if ( message.error ) {
                 console.error(message.error);
@@ -39,18 +46,18 @@ var SHOWME = (function (){
                 return;
             }
 
-            console.log('Received: ' + message.command);
+            that.log('Received: ' + message.command);
             var args = JSON.parse(message.args);
             that[message.command](args);
         },
 
         loadUrl: function(args) {
-            console.log('Loading url: ' + args.url);
+            that.log('Loading url: ' + args.url);
             window.location = args.url; 
         },
 
         highlightElement: function(args) {
-            console.debug('Highlighting');
+            that.log('Highlighting');
 
             // Remove highlighting from previous element
             if ( lastHighlighted.element ) {

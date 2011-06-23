@@ -1,6 +1,4 @@
 // showMe Admin
-console.log('Admin pulled in');
-
 var SHOWME = (function() { 
     var socket;
     var customerDocument = null;
@@ -8,6 +6,7 @@ var SHOWME = (function() {
     var that = { 
         admin: 1,
         lastClicked: null,
+        debug: 0,
 
         init: function() {
             that.connectToShowMe();
@@ -24,11 +23,19 @@ var SHOWME = (function() {
             var command = document.getElementById('command').value;
             var customerId = document.getElementById('customerId').value;
             var argString = document.getElementById('args').value;
-            console.log(
+            that.log(
                 'Dispatching command "' + command + '" to customer "'
                 + customerId + '"' + ' with args ' + argString
             );
             socket.send({type: 'A', customerId: customerId, command: command, argString: argString});
+        },
+
+        /* log - function to log messages to the console IF debug mode is on
+         */
+        log: function(message) {
+            if (that.debug === 1) {
+                console.log(message);
+            }
         },
 
         isEmpty: function(value) {
@@ -68,7 +75,7 @@ var SHOWME = (function() {
          */
         getClickedElement: function(e){
             if ( that.isEmpty(document.getElementById('customerPage').src) ) {
-                console.info('empty src');
+                that.log('empty src');
                 return;
             }
 
@@ -82,9 +89,9 @@ var SHOWME = (function() {
 
             var tagName = e.target ? e.target.tagName : e.srcElement.tagName;
             tagName = tagName.toLowerCase();
-            console.debug('You clicked: ' + tagName);
+            that.log('You clicked: ' + tagName);
             var elements = customerDocument.getElementsByTagName(tagName);
-            console.log('length: ' + elements.length);
+            that.log('length: ' + elements.length);
             var index = 0;
             while ( index < elements.length ) {
                 if ( elements.item(index) == e.target ) {
@@ -96,7 +103,7 @@ var SHOWME = (function() {
             }
             that.lastClicked = { tag: tagName, index: index };
             document.getElementById('args').value = JSON.stringify(that.lastClicked);
-            console.log('You clicked the element indexed at ' + index);
+            that.log('You clicked the element indexed at ' + index);
             document.getElementById('command').value = 'highlightElement';
         },
 
