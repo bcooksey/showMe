@@ -40,6 +40,19 @@ var SHOWME = (function() {
             };
         },
 
+        /* stopEvent - Cross-browsesr compatible function to completely kill an event
+         *   (current action and bubbling)
+         */
+        stopEvent: function(e) {
+            var event = e || window.event;
+
+            // Kill event
+            event.preventDefault ? event.preventDefault() : event.returnValue = false;
+
+            // Stop bubbling
+            event.stopPropagation ? event.stopPropagation() : event.cancelBubble = false;
+        },
+
         makeCustomerLoadCorrectPage: function() {
             document.getElementById('command').value = 'loadUrl';
             document.getElementById('args').value = JSON.stringify( { url: './customer.html?identifier=' } );
@@ -64,8 +77,7 @@ var SHOWME = (function() {
             // many browsers do special things when control keys are pressed
             // (example: ctrl + click opens a link in a new tab in FF )  
             if ( e.ctrlKey ) {
-                e.preventDefault();
-                e.stopPropagation(); //FIXME: BROKEN FOR IE
+                that.stopEvent(e);
             }
 
             var tagName = e.target.tagName.toLowerCase();
