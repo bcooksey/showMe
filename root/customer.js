@@ -3,8 +3,10 @@ console.log('Customer pulled in');
 
 var SHOWME = (function (){
 
+    // Private stuff
     var socket = null;
-    var lastElementHighlighted = null;
+    var lastHighlighted = {};
+
     // Socket.io works through callbacks, so we need an accessible
     // reference to this module.
     var that = {
@@ -51,8 +53,8 @@ var SHOWME = (function (){
             console.debug('Highlighting');
 
             // Remove highlighting from previous element
-            if ( lastElementHighlighted ) {
-                lastElementHighlighted.style.backgroundColor = ''; 
+            if ( lastHighlighted.element ) {
+                lastHighlighted.element.style.backgroundColor = lastHighlighted.bgColor; 
             }
 
             // Scroll to the chosen element
@@ -60,8 +62,9 @@ var SHOWME = (function (){
             window.scrollTo(0, element.offsetTop);
 
             // Highlight the element
+            lastHighlighted.bgColor = element.style.backgroundColor;
             element.style.backgroundColor = '#CCCC33';
-            lastElementHighlighted = element;
+            lastHighlighted.element = element;
         }
     };
     return that;
