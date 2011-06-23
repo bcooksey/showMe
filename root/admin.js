@@ -113,12 +113,16 @@ var SHOWME = (function() {
                     console.error( response.error );
                 }
                 else {
-                    //FIXME Make this IE compatible (attachEvent)
                     var customerPage = document.getElementById('customerPage');
                     customerPage.src = response.url; 
                     customerPage.onload = function() {
                         customerDocument = customerPage.contentDocument;
-                        customerDocument.addEventListener('click', that.getClickedElement, true);
+                        if (customerDocument.addEventListener) {
+                            customerDocument.addEventListener('click', that.getClickedElement, true);
+                        }
+                        else {
+                            customerDocument.attachEvent('onclick', that.getClickedElement);
+                        }
                     };
                 }
             });
