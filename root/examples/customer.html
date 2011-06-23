@@ -7,7 +7,7 @@
             function showPopUp() { alert('Dynamic content example'); }
         </script>
         <script type="text/javascript">
-            SHOWME.identifier = window.location.search.match(/identifier=(\d)/)[1];
+            SHOWME.identifier = window.location.search.match(/identifier=(\d+)/)[1];
             SHOWME.init();
         </script>
     </head>

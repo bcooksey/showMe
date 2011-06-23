@@ -11,8 +11,7 @@
             <a href="/examples/admin.html">admin</a>
             ?
         <script type="text/javascript">
-            var identifier = Math.ceil(Math.random() * 10); // Number between 1-10
-            identifier = identifier % 3 + 1; // Restrict to 1-3
+            var identifier = Math.ceil(Math.random() * 100); // Number between 1-100
             document.getElementsByTagName('a').item(0).href += '?identifier=' + identifier;
         </script>
     </body>
