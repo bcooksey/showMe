@@ -80,7 +80,8 @@ var SHOWME = (function() {
                 that.stopEvent(e);
             }
 
-            var tagName = e.target.tagName.toLowerCase();
+            var tagName = e.target ? e.target.tagName : e.srcElement.tagName;
+            tagName = tagName.toLowerCase();
             console.debug('You clicked: ' + tagName);
             var elements = customerDocument.getElementsByTagName(tagName);
             console.log('length: ' + elements.length);
