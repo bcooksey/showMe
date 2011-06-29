@@ -79,14 +79,22 @@ function onAdminMessage(message, client){
 }
 
 function respondToAdmin(message, client) {
-    console.log('admin ' + client.sessionId + ' requested ' + message.command + ' with args: ');
-    console.dir(message.args);
-    var args = JSON.parse(message.args);
+    console.log('admin ' + client.sessionId + ' requested ' + message.command);
+    var args = {};
 
-    // TODO: call methods dynamically
+    if ( message.args ) {
+        console.log('args:');
+        console.dir(message.args);
+        args = JSON.parse(message.args);
+    }
+
+    // TODO: call methods dynamically (but maybe not, see #16)
     var response;
     if ( message.command === 'getCustomerUrl' ) {
         response = getCustomerUrl(args);
+    }
+    else {
+        response = {error: 'Invalid command'};
     }
     admins[client.sessionId].send( JSON.stringify(response) );
 }
@@ -115,7 +123,7 @@ function getCustomerUrl(args) {
 
 /********** Helper Methods **********/
 
-function isEmpty(value){
+function isEmpty(value) {
     if ( typeof value === "undefined" || value === null || value == '' ) {
         return 1;
     }

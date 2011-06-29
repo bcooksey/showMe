@@ -48,7 +48,9 @@ var SHOWME = (function (){
 
             that.log('Received: ' + message.command);
             var args = JSON.parse(message.args);
-            that[message.command](args);
+            if ( that.hasOwnProperty(message.command) ) {
+                that[message.command](args);
+            }
         },
 
         loadUrl: function(args) {
