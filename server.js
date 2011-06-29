@@ -80,8 +80,8 @@ function onAdminMessage(message, client){
 
 function respondToAdmin(message, client) {
     console.log('admin ' + client.sessionId + ' requested ' + message.command);
-    var args = {};
 
+    var args = {};
     if ( message.args ) {
         console.log('args:');
         console.dir(message.args);
@@ -100,6 +100,13 @@ function respondToAdmin(message, client) {
 }
 
 function sendCommandToCustomer(message, client) {
+
+    // Validate customer
+    if ( isEmpty(customers[message.customerId]) ) {
+        client.send( JSON.stringify({ error: 'No customer defined with id ' + message.customerId }) );
+        return;
+    }
+
     console.log('admin ' + client.sessionId + ' gave customer ' + message.customerId + ' command ' + message.command + ' with args: ');
     //TODO parse message.args into a JSON array.  It's currently a string
     console.dir(message.argString);
