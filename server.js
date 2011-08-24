@@ -1,6 +1,6 @@
 var http = require('http');
 
-// Setup static file servering
+/********** Setup static file servering **********/
 var paperboy = require('paperboy');
 var path = require('path');
 var WEBROOT = path.join(path.dirname(__filename), 'root');
@@ -23,6 +23,7 @@ var server = http.createServer(function(req, res){
     ;
 });
 server.listen(8899);
+/********** END Setup static file serving **********/
 
 /********** Setup socket.io **********/
 var io  = require('socket.io');
