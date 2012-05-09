@@ -20,8 +20,7 @@ var SHOWME = (function (){
             if ( typeof window.parent.SHOWME !== 'undefined' && window.parent.SHOWME.admin === 1 ) {
                 return;
             }
-            socket = new io.Socket( window.location.hostname, { port: 8899 } ); 
-            socket.connect();
+            socket = new io.connect( window.location.hostname, { port: 8899 } ); 
             var clientInfo = JSON.stringify({ 
                 role: 'C',
                 id: that.identifier,

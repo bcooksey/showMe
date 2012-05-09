@@ -13,8 +13,7 @@ var SHOWME = (function() {
         },
 
         connectToShowMe: function() {
-            socket = new io.Socket( window.location.hostname, { port: 8899 } ); 
-            socket.connect();
+            socket = new io.connect( window.location.hostname, { port: 8899 } ); 
             var message = JSON.stringify({ role: 'A' });
             socket.on('connect', function(){ socket.send(message); });
         },
@@ -27,7 +26,8 @@ var SHOWME = (function() {
                 'Dispatching command "' + command + '" to customer "'
                 + customerId + '"' + ' with args ' + argString
             );
-            socket.send({type: 'A', customerId: customerId, command: command, argString: argString});
+            var message = JSON.stringify({type: 'A', customerId: customerId, command: command, argString: argString});
+            socket.send(message);
         },
 
         /* log - function to log messages to the console IF debug mode is on
@@ -135,8 +135,8 @@ var SHOWME = (function() {
                 }
             });
 
-            var args = JSON.stringify({ customerId: customerId });
-            socket.send({ args: args, command: 'getCustomerUrl'}); 
+            var message = JSON.stringify({ args: { customerId: customerId }, command: 'getCustomerUrl'});
+            socket.send(message);
         }
     };
 
