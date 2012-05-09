@@ -26,7 +26,9 @@ var SHOWME = (function() {
                 'Dispatching command "' + command + '" to customer "'
                 + customerId + '"' + ' with args ' + argString
             );
-            var message = JSON.stringify({type: 'A', customerId: customerId, command: command, argString: argString});
+
+            var args    = JSON.parse(argString);
+            var message = JSON.stringify({type: 'A', customerId: customerId, command: command, args: args});
 
             // Listen for an error response from server
             socket.once('message', function(rawResponse) {

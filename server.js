@@ -108,9 +108,8 @@ function sendCommandToCustomer(message, client) {
     }
 
     console.log('admin ' + client.id + ' gave customer ' + message.customerId + ' command ' + message.command + ' with args: ');
-    //TODO parse message.args into a JSON array.  It's currently a string
-    console.dir(message.argString);
-    customers[message.customerId].client.send( JSON.stringify({command: message.command, args: message.argString}) );
+    console.dir(message.args);
+    customers[message.customerId].client.send( JSON.stringify({command: message.command, args: message.args}) );
 }
 
 /********** END Setup socket.io **********/
