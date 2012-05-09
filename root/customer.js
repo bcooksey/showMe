@@ -38,7 +38,9 @@ var SHOWME = (function (){
             }
         },
 
-        onMessage: function(message) {
+        onMessage: function(rawMessage) {
+            var message = JSON.parse(rawMessage);
+
             if ( message.error ) {
                 console.error(message.error);
                 socket.disconnect();
@@ -46,15 +48,14 @@ var SHOWME = (function (){
             }
 
             that.log('Received: ' + message.command);
-            var args = JSON.parse(message.args);
             if ( that.hasOwnProperty(message.command) ) {
-                that[message.command](args);
+                that[message.command](message.args);
             }
         },
 
         loadUrl: function(args) {
             that.log('Loading url: ' + args.url);
-            window.location = args.url; 
+            window.location = args.url;
         },
 
         highlightElement: function(args) {

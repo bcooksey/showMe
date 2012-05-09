@@ -27,6 +27,15 @@ var SHOWME = (function() {
                 + customerId + '"' + ' with args ' + argString
             );
             var message = JSON.stringify({type: 'A', customerId: customerId, command: command, argString: argString});
+
+            // Listen for an error response from server
+            socket.once('message', function(rawResponse) {
+                var response = JSON.parse(rawResponse); 
+                if ( !that.isEmpty(response.error) ) {
+                    that.log(response.error);
+                }
+            });
+
             socket.send(message);
         },
 
@@ -118,7 +127,7 @@ var SHOWME = (function() {
             socket.once('message', function(rawResponse) {
                 var response = JSON.parse(rawResponse); 
                 if ( !that.isEmpty(response.error) ) {
-                    console.error( response.error );
+                    that.log(response.error);
                 }
                 else {
                     var customerPage = document.getElementById('customerPage');

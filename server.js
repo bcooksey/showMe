@@ -67,8 +67,8 @@ function newClient(message, client) {
 }
 
 // Main listener for data sent from admins
-function onAdminMessage(message, client){
-    message = JSON.parse(message);
+function onAdminMessage(rawMessage, client){
+    message = JSON.parse(rawMessage);
 
     // If no customerId is given, then the response is meant to be returned to
     // the admin who sent the command.
@@ -110,7 +110,7 @@ function sendCommandToCustomer(message, client) {
     console.log('admin ' + client.id + ' gave customer ' + message.customerId + ' command ' + message.command + ' with args: ');
     //TODO parse message.args into a JSON array.  It's currently a string
     console.dir(message.argString);
-    customers[message.customerId].client.send({command: message.command, args: message.argString});
+    customers[message.customerId].client.send( JSON.stringify({command: message.command, args: message.argString}) );
 }
 
 /********** END Setup socket.io **********/
